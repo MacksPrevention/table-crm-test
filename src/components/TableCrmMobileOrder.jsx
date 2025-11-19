@@ -4,8 +4,6 @@ import { DeleteOutlined } from '@ant-design/icons';
 
 const { Search } = Input;
 
-const API_BASE = 'https://app.tablecrm.com/api/v1';
-
 const toOptions = (arr, valueKey = 'id', labelKey = 'name') =>
     Array.isArray(arr) ? arr.map(item => ({ value: item[valueKey], label: item[labelKey] })) : [];
 
@@ -47,12 +45,11 @@ export default function TableCrmMobileOrder() {
         setLoading(true);
         try {
             const [orgRes, whRes, ptRes, pbRes, prodRes, custRes] = await Promise.all([
-                fetchJson(`${API_BASE}/organizations/?token=${token}`),
-                fetchJson(`${API_BASE}/warehouses/?token=${token}`),
-                fetchJson(`${API_BASE}/price_types/?token=${token}`),
-                fetchJson(`${API_BASE}/payboxes/?token=${token}`),
-                fetchJson(`${API_BASE}/nomenclature/?token=${token}`),
-                fetchJson(`${API_BASE}/contragents/?token=${token}`),
+                fetchJson(`/api/proxy?path=warehouses/&token=${token}`),
+                fetchJson(`/api/proxy?path=price_types/&token=${token}`),
+                fetchJson(`/api/proxy?path=payboxes/&token=${token}`),
+                fetchJson(`/api/proxy?path=nomenclature/&token=${token}`),
+                fetchJson(`/api/proxy?path=contragents/&token=${token}`)
             ]);
 
             console.log(orgRes)
@@ -155,7 +152,6 @@ export default function TableCrmMobileOrder() {
         console.log("=== PAYLOAD CHECK ===");
         console.log(JSON.stringify(body, null, 2));
 
-        // Если режим проверки, не делаем fetch
         if (testOnly) {
             message.info('Payload проверен. Запрос не отправлен.');
             return;
@@ -163,7 +159,7 @@ export default function TableCrmMobileOrder() {
 
         setLoading(true);
         try {
-            const res = await fetch(`${API_BASE}/docs_sales/?token=${token}`, {
+            const res = await fetch(`/api/proxy?path=docs_sales/&token=${token}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(body)
@@ -178,7 +174,7 @@ export default function TableCrmMobileOrder() {
             message.success('Заказ создан');
 
             if (process && json[0]?.id) {
-                const patchRes = await fetch(`${API_BASE}/docs_sales/${json[0].id}/status?token=${token}`, {
+                const patchRes = await fetch(`/api/proxy?path=docs_sales/${json[0].id}/status&token=${token}`, {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status: true })
