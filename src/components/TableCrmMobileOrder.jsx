@@ -406,6 +406,31 @@ export default function TableCrmMobileOrder() {
                             )}
                             columns={[
                                 { title: 'Название', dataIndex: 'name', key: 'name' },
+                                {
+                                    title: 'Кол-во',
+                                    dataIndex: 'qty',
+                                    key: 'qty',
+                                    render: (_, record) => {
+                                        const existing = selectedProducts.find(p => p.id === record.id);
+                                        const qty = existing?.qty ?? 1;
+
+                                        return (
+                                            <InputNumber
+                                                min={1}
+                                                size="small"
+                                                value={qty}
+                                                onChange={(v) => {
+                                                    if (existing) {
+                                                        updateProduct(record.id, { qty: v });
+                                                    } else {
+                                                        record.tempQty = v;
+                                                    }
+                                                }}
+                                                style={{ width: 60 }}
+                                            />
+                                        );
+                                    }
+                                },
                                 { title: 'Действие', key: 'action', render: (_, record) => <Button onClick={() => addProduct(record)}>Добавить</Button> }
                             ]}
                             rowKey="id"
