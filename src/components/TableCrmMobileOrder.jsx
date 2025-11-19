@@ -216,7 +216,7 @@ export default function TableCrmMobileOrder() {
             dataIndex: 'price',
             key: 'price',
             render: (_, record) => (
-                <InputNumber
+                <Input
                     defaultValue={0}
                     className="expand-input"
                     size="small"
@@ -231,7 +231,7 @@ export default function TableCrmMobileOrder() {
             dataIndex: 'qty',
             key: 'qty',
             render: (_, record) => (
-                <InputNumber
+                <Input
                     defaultValue={1}
                     size="small"
                     min={1}
