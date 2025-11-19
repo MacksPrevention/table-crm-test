@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@import '@a1rth/css-normalize';
+
+#root {
+    background-color: #f5f5f5;
+}
+
+.expand-input {
+    width: 40px;
+    transition: width 0.2s;
+}
+
+.expand-input:focus-within {
+    width: 70px;
+}
