@@ -45,6 +45,7 @@ export default function TableCrmMobileOrder() {
         setLoading(true);
         try {
             const [orgRes, whRes, ptRes, pbRes, prodRes, custRes] = await Promise.all([
+                fetchJson(`/api/proxy?path=organizations/&token=${token}`),
                 fetchJson(`/api/proxy?path=warehouses/&token=${token}`),
                 fetchJson(`/api/proxy?path=price_types/&token=${token}`),
                 fetchJson(`/api/proxy?path=payboxes/&token=${token}`),
